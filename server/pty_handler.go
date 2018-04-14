@@ -1,7 +1,6 @@
 package server
 
 import (
-	"encoding/base64"
 	"io"
 	"log"
 	"net/http"
@@ -50,8 +49,6 @@ func PtyHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO: check for errors, return 500 on fail
 	wp.Start()
 
-	// copy everything from the pty master to the websocket
-	// using base64 encoding for now due to limitations in term.js
 	go func() {
 		buf := make([]byte, 128)
 		// TODO: more graceful exit on socket close / process exit
@@ -62,10 +59,7 @@ func PtyHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			out := make([]byte, base64.StdEncoding.EncodedLen(n))
-			base64.StdEncoding.Encode(out, buf[0:n])
-
-			err = conn.WriteMessage(websocket.TextMessage, out)
+			err = conn.WriteMessage(websocket.TextMessage, buf)
 
 			if err != nil {
 				log.Printf("Failed to send %d bytes on websocket: %s", n, err)
@@ -89,12 +83,7 @@ func PtyHandler(w http.ResponseWriter, r *http.Request) {
 		case websocket.BinaryMessage:
 			log.Printf("Ignoring binary message: %q\n", payload)
 		case websocket.TextMessage:
-			buf := make([]byte, base64.StdEncoding.DecodedLen(len(payload)))
-			_, err := base64.StdEncoding.Decode(buf, payload)
-			if err != nil {
-				log.Printf("base64 decoding of payload failed: %s\n", err)
-			}
-			wp.Pty.Write(buf)
+			wp.Pty.Write(payload)
 		default:
 			log.Printf("Invalid message type %d\n", mt)
 			return
