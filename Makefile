@@ -14,11 +14,11 @@ build:
 	@script/build $(APP) $(VERSION)
 
 run:
-	@echo "$(OK_COLOR)==> Building revision $(VERSION)...$(NO_COLOR)"
+	@echo "$(OK_COLOR)==> Running revision $(VERSION)...$(NO_COLOR)"
 	@script/run
 
 yarn:
-	@echo "$(OK_COLOR)==> Building revision $(VERSION)...$(NO_COLOR)"
+	@echo "$(OK_COLOR)==> Running yarn install revision $(VERSION)...$(NO_COLOR)"
 	@script/yarn
 
 format:
