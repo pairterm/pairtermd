@@ -17,6 +17,10 @@ run:
 	@echo "$(OK_COLOR)==> Running revision $(VERSION)...$(NO_COLOR)"
 	@script/run
 
+run-client:
+	@echo "$(OK_COLOR)==> Running pairtermjs revision $(VERSION)...$(NO_COLOR)"
+	@script/run-client
+
 yarn:
 	@echo "$(OK_COLOR)==> Running yarn install revision $(VERSION)...$(NO_COLOR)"
 	@script/yarn
