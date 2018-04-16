@@ -17,6 +17,10 @@ run:
 	@echo "$(OK_COLOR)==> Building revision $(VERSION)...$(NO_COLOR)"
 	@script/run
 
+yarn:
+	@echo "$(OK_COLOR)==> Building revision $(VERSION)...$(NO_COLOR)"
+	@script/yarn
+
 format:
 	go fmt ./...
 
