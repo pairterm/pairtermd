@@ -11,15 +11,27 @@ all: build
 
 build:
 	@echo "$(OK_COLOR)==> Building revision $(VERSION)...$(NO_COLOR)"
-	@script/build $(APP) $(VERSION)
+	@script/build $(APP) $(VERSION) dev
 
-run:
+run: build
 	@echo "$(OK_COLOR)==> Running revision $(VERSION)...$(NO_COLOR)"
 	@script/run
 
 run-client:
 	@echo "$(OK_COLOR)==> Running pairtermjs revision $(VERSION)...$(NO_COLOR)"
 	@script/run-client
+
+build-client:
+	@echo "$(OK_COLOR)==> Building pairtermjs for production revision $(VERSION)...$(NO_COLOR)"
+	@script/build-client
+
+prod: build-client rice
+	@echo "$(OK_COLOR)==> Bundling assets in rice $(VERSION)...$(NO_COLOR)"
+	@script/build $(APP) $(VERSION) prod
+
+rice:
+	@echo "$(OK_COLOR)==> Bundling assets in rice $(VERSION)...$(NO_COLOR)"
+	@script/rice
 
 yarn:
 	@echo "$(OK_COLOR)==> Running yarn install revision $(VERSION)...$(NO_COLOR)"
@@ -35,4 +47,4 @@ test:
 release:
 	@script/release $(VERSION)
 
-.PHONY: all build test release
+.PHONY: all build test release run-client build-client

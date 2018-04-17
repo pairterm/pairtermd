@@ -5,20 +5,32 @@ import (
 	"net"
 	"net/http"
 
+	rice "github.com/GeertJohan/go.rice"
 	"github.com/pairterm/pairtermd/server"
 )
 
 var version string
+var mode string
 
 func main() {
-	listener, err := net.Listen("tcp", ":9000")
+	port := ":0"
+
+	if mode == "dev" {
+		port = ":9000"
+	}
+
+	listener, err := net.Listen("tcp", port)
 	if err != nil {
 		panic(err)
 	}
 
 	http.HandleFunc("/pty", server.PtyHandler)
-	http.HandleFunc("/", server.WebpackHandler)
-	fmt.Printf("Starting pairtermd on %d...\n", listener.Addr().(*net.TCPAddr).Port)
+	if mode == "dev" {
+		http.HandleFunc("/", server.WebpackHandler)
+	} else {
+		http.Handle("/", http.FileServer(rice.MustFindBox("pairtermjs/dist").HTTPBox()))
+	}
+	fmt.Printf("Starting pairtermd (%s) on %d...\n", version, listener.Addr().(*net.TCPAddr).Port)
 
 	panic(http.Serve(listener, nil))
 }
