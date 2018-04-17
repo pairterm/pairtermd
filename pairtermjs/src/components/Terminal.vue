@@ -21,13 +21,14 @@ export default {
   methods: {
     initTerminal: () => {
       let term = new Terminal()
+      term.open(document.getElementById('terminal'))
+      term.fit()
+      term.focus()
+
       let sock = new WebSocket(`ws://${window.location.host}/pty?cols=${term.cols}&rows=${term.rows}`)
       sock.onerror = (e) => { console.log('socket error', e) }
       sock.onopen = (e) => { term.attach(sock, true, true) }
 
-      term.open(document.getElementById('terminal'))
-      term.fit()
-      term.focus()
       term.on('resize', (size) => {
         let payload = {
           type: 'pt_resize',
