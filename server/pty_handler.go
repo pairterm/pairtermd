@@ -74,7 +74,12 @@ func streamToPty(wp ws.Pty, conn *websocket.Conn) {
 		case websocket.BinaryMessage:
 			wp.Write(payload)
 		case websocket.TextMessage:
-			wp.Write(payload)
+			cmd, err := ws.ParseCommand(payload)
+			if err != nil {
+				wp.Write(payload)
+			} else {
+				wp.HandleCommand(cmd)
+			}
 		default:
 			log.Printf("Invalid message type %d\n", mt)
 			return

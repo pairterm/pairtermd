@@ -16,22 +16,27 @@ export default {
   name: 'Terminal',
   mounted () {
     var term = this.initTerminal()
-    var sock = new WebSocket(`ws://${window.location.host}/pty?cols=${term.cols}&rows=${term.rows}`)
-
     window.addEventListener('resize', () => { term.fit(); return true })
-
-    sock.onerror = (e) => { console.log('socket error', e) }
-    sock.onopen = (e) => { term.attach(sock, true, true) }
   },
   methods: {
     initTerminal: () => {
-      var term = new Terminal()
+      let term = new Terminal()
+      let sock = new WebSocket(`ws://${window.location.host}/pty?cols=${term.cols}&rows=${term.rows}`)
+      sock.onerror = (e) => { console.log('socket error', e) }
+      sock.onopen = (e) => { term.attach(sock, true, true) }
+
       term.open(document.getElementById('terminal'))
       term.fit()
       term.focus()
-      term.on('title', (title) => { document.title = title })
       term.on('resize', (size) => {
-        console.log('resized to ', size.cols, size.rows)
+        let payload = {
+          type: 'pt_resize',
+          payload: {
+            cols: size.cols,
+            rows: size.rows
+          }
+        }
+        sock.send(JSON.stringify(payload))
       })
 
       return term

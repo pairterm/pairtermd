@@ -61,6 +61,15 @@ func (wp *Pty) Resize(cols int, rows int) {
 	syscall.Syscall(syscall.SYS_IOCTL, wp.pty.Fd(), uintptr(syscall.TIOCSWINSZ), uintptr(unsafe.Pointer(wins)))
 }
 
+func (wp *Pty) HandleCommand(cmd Command) {
+	switch cmd.Type {
+	case "pt_resize":
+		cols := int(cmd.Payload["cols"].(float64))
+		rows := int(cmd.Payload["rows"].(float64))
+		wp.Resize(cols, rows)
+	}
+}
+
 func parseColsAndRows(colsString string, rowsString string) (int, int, error) {
 	cols, colsParseErr := strconv.Atoi(colsString)
 	rows, rowsParseErr := strconv.Atoi(rowsString)
