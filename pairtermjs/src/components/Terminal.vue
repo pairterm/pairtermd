@@ -14,19 +14,27 @@ Terminal.applyAddon(attach)
 
 export default {
   name: 'Terminal',
-  mounted: () => {
-    var host = window.location.host
-    var sock = new WebSocket(`ws://${host}/pty`)
-    var term = new Terminal()
+  mounted () {
+    var term = this.initTerminal()
+    var sock = new WebSocket(`ws://${window.location.host}/pty?cols=${term.cols}&rows=${term.rows}`)
+
+    window.addEventListener('resize', () => { term.fit(); return true })
+
     sock.onerror = (e) => { console.log('socket error', e) }
-    // wait for the socket to open before starting the terminal
-    // or there will be ordering issues :/
-    sock.onopen = (e) => {
+    sock.onopen = (e) => { term.attach(sock, true, true) }
+  },
+  methods: {
+    initTerminal: () => {
+      var term = new Terminal()
       term.open(document.getElementById('terminal'))
       term.fit()
       term.focus()
       term.on('title', (title) => { document.title = title })
-      term.attach(sock, true, true)
+      term.on('resize', (size) => {
+        console.log('resized to ', size.cols, size.rows)
+      })
+
+      return term
     }
   }
 }
