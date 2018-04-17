@@ -3,13 +3,18 @@ set -x
 set -e
 export APP=${1:?"app is required"}
 export VERSION=${2:?"version is required"}
+export MODE=${3:?"mode is required"}
 export BUILD_DIR=./build
-export RELEASE_APP_NAME=pairtermd
-export SCALEDIR="${GOPATH:-~/go}"
+if [ $MODE = "dev" ]
+then
+	export RELEASE_APP_NAME=pairtermd-dev
+else
+	export RELEASE_APP_NAME=pairtermd
+fi
 
-rm -f "$BUILD_DIR/$APP"
+rm -f "$BUILD_DIR/$RELEASE_APP_NAME"
 mkdir -p "$BUILD_DIR"
 
-go build -ldflags="-X github.com/pairterm/pairtermd/cmd.version=${VERSION}" -x -v -o $BUILD_DIR/$RELEASE_APP_NAME github.com/pairterm/pairtermd
+go build -ldflags="-X main.version=${VERSION} -X main.mode=${MODE}" -x -v -o $BUILD_DIR/$RELEASE_APP_NAME github.com/pairterm/pairtermd
 
 echo "Binary built successfully: $BUILD_DIR/$RELEASE_APP_NAME"
