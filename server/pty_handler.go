@@ -50,16 +50,16 @@ func PtyHandler(w http.ResponseWriter, r *http.Request) {
 	wp.Start()
 
 	go func() {
-		buf := make([]byte, 128)
 		// TODO: more graceful exit on socket close / process exit
 		for {
+			buf := make([]byte, 128)
 			n, err := wp.Pty.Read(buf)
 			if err != nil {
 				log.Printf("Failed to read from pty master: %s", err)
 				return
 			}
 
-			err = conn.WriteMessage(websocket.TextMessage, buf)
+			err = conn.WriteMessage(websocket.BinaryMessage, buf)
 
 			if err != nil {
 				log.Printf("Failed to send %d bytes on websocket: %s", n, err)
@@ -69,7 +69,6 @@ func PtyHandler(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	// read from the web socket, copying to the pty master
-	// messages are expected to be text and base64 encoded
 	for {
 		mt, payload, err := conn.ReadMessage()
 		if err != nil {
@@ -81,7 +80,7 @@ func PtyHandler(w http.ResponseWriter, r *http.Request) {
 
 		switch mt {
 		case websocket.BinaryMessage:
-			log.Printf("Ignoring binary message: %q\n", payload)
+			wp.Pty.Write(payload)
 		case websocket.TextMessage:
 			wp.Pty.Write(payload)
 		default:
