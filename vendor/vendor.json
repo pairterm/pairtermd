@@ -1,0 +1,61 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "kKJt1zfbsyHCLtcTuhnUVPaVszw=",
+			"path": "github.com/GeertJohan/go.incremental",
+			"revision": "1172aab965109e2a70720a0f144b2a5dfeb92fa5",
+			"revisionTime": "2016-12-12T21:30:43Z"
+		},
+		{
+			"checksumSHA1": "Y71DWZxVHxm5RKQDF2807roHrv4=",
+			"path": "github.com/akavel/rsrc/binutil",
+			"revision": "f6a15ece2cfd2560077c556499f19340ddc768e9",
+			"revisionTime": "2017-08-31T12:24:31Z"
+		},
+		{
+			"checksumSHA1": "dY6sByHSXr76sRhg42HvGqYhU5I=",
+			"path": "github.com/akavel/rsrc/coff",
+			"revision": "f6a15ece2cfd2560077c556499f19340ddc768e9",
+			"revisionTime": "2017-08-31T12:24:31Z"
+		},
+		{
+			"checksumSHA1": "koFt/8LRRstzGzb8vc9cqSoLbv4=",
+			"path": "github.com/ipsn/go-ipfs",
+			"revision": "a08372e59167b2e5ac028b4a7c9c2fc6cb9c6c8e",
+			"revisionTime": "2018-04-20T21:10:51Z"
+		},
+		{
+			"checksumSHA1": "OH94abBdbmoVqyRqYBfgUT9N494=",
+			"path": "github.com/jessevdk/go-flags",
+			"revision": "1c38ed7ad0cc3d9e66649ac398c30e45f395c4eb",
+			"revisionTime": "2018-03-31T12:42:32Z"
+		},
+		{
+			"checksumSHA1": "ym3Koe72EEWlnhyjCmuC0FSlDyw=",
+			"path": "github.com/kr/pty",
+			"revision": "282ce0e5322c82529687d609ee670fac7c7d917c",
+			"revisionTime": "2018-01-13T18:08:13Z"
+		},
+		{
+			"checksumSHA1": "bhIRWH0KWeGsI68ZYrfhKKqf4bI=",
+			"path": "github.com/pairterm/pairtermd",
+			"revision": "667bf0ef2e6c16dad10d5966dd17e435abac2d0e",
+			"revisionTime": "2018-04-17T20:23:08Z"
+		},
+		{
+			"checksumSHA1": "4pGU306+TbZnkLwLPYMlTT8m5bc=",
+			"path": "github.com/pairterm/pairtermd/server",
+			"revision": "667bf0ef2e6c16dad10d5966dd17e435abac2d0e",
+			"revisionTime": "2018-04-17T20:23:08Z"
+		},
+		{
+			"checksumSHA1": "JPE4z/HycQH9DbihVVSVWKDLqBs=",
+			"path": "github.com/pairterm/pairtermd/ws",
+			"revision": "667bf0ef2e6c16dad10d5966dd17e435abac2d0e",
+			"revisionTime": "2018-04-17T20:23:08Z"
+		}
+	],
+	"rootPath": "github.com/pairterm/pairtermd"
+}
